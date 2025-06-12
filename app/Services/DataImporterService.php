@@ -134,15 +134,19 @@ class DataImporterService implements DataImporterInterface
             return [];
         }
 
+        $nameDetails = !empty($data['name']) ?  $data['name'] : [];
+        $loginDetails = !empty($data['login']) ?  $data['login'] : [];
+        $locationDetails = !empty($data['location']) ?  $data['location'] : [];
+        
         return [
-            'first_name' => isset($data['name']) ? $data['name']['first'] : '',
-            'last_name' => isset($data['name']) ? $data['name']['last'] : '',
+            'first_name' => $nameDetails['first'] ?? '',
+            'last_name' => $nameDetails['last'] ?? '',
             'email' => $data['email'],
-            'username' => isset($data['login']) ? $data['login']['username'] : '',
-            'password' => md5(isset($data['login']) ? $data['login']['password'] : ''),
+            'username' => $loginDetails['username'] ?? '',
+            'password' => md5($loginDetails['password'] ?? ''),
             'gender' => $data['gender'],
-            'country' => isset($data['location']) ? $data['location']['country'] : '',
-            'city' => isset($data['location']) ? $data['location']['city'] : '',
+            'country' => $locationDetails['country'] ?? '',
+            'city' => $locationDetails['city'] ?? '',
             'phone' => $data['phone'],
             'is_valid' => !$isValid->fails(),
             'error_msg' => $isValid->fails() ? $isValid->errors()->all() : []
